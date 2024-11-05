@@ -12,4 +12,12 @@ class Technology extends Model
     protected $fillable = [
         'title',
     ];
+
+    // relazioni
+    
+    // tante tecnologie vedono tanti progetti
+
+    public function projects(){
+        return $this->belongsToMany(Project::class);
+    }
 }

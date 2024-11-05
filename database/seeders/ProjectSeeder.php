@@ -5,9 +5,13 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+// helpers
+use Illuminate\Support\Facades\Schema;
+
 // model
 use App\Models\Project;
 use App\Models\Type;
+use App\Models\Technology;
 
 class ProjectSeeder extends Seeder
 {
@@ -16,8 +20,10 @@ class ProjectSeeder extends Seeder
      */
     public function run(): void
     {
-        Project::truncate();
-
+        Schema::withoutForeignKeyConstraints(function(){
+            Project::truncate();
+        });
+        
         for($i=0; $i<10; $i++) {
 
             // creo una variabile per titolo e per slug
@@ -28,7 +34,7 @@ class ProjectSeeder extends Seeder
             // mi prendo un'istanza casuale dalla tabella dei type
             $randomType= Type::inRandomOrder()->first();
 
-            Project::create([
+            $project = Project::create([
 
                 'title' => $title,
                 'slug' => $slug,
@@ -41,6 +47,18 @@ class ProjectSeeder extends Seeder
                 // aggiungo la colonna type_id
                 'type_id' => $randomType->id,
             ]);
+
+            $technologyIds = [];
+
+            for ($j=0; $j < rand(0, Technology::count()) ; $j++) { 
+                $randomTechnology = Technology::inRandomOrder()->first();
+
+                if (!in_array($randomTechnology->id, $technologyIds)) {
+                    $technologyIds[] = $randomTechnology->id;
+                }
+            }
+
+            $project->technologies()->sync($technologyIds);
         }
     }
 }

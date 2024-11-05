@@ -74,7 +74,7 @@
                                 <input value="{{ old('sector') }}" type="text" minlength="3" maxlength="64" id="sector" name="sector" placeholder="Write the sector of the project..." class="form-control">
                             </div>
 
-                            {{-- aggiunta selsct per aggiungere il type --}}
+                            {{-- aggiunta select per aggiungere il type --}}
                             <div class="col-2">
                                 <label for="type_id" class="form-label">
                                     Type
@@ -100,6 +100,24 @@
 
                                 </select>
                             </div>
+
+                        </div>
+
+                        {{-- aggiunte checkbox per aggiungere le categorie --}}
+                        <div class="mb-5">
+
+                            <div>
+                                <label class="form-label">Technologies</label>
+                            </div>
+
+                            @foreach ($technologies as $technology)
+                                <div class="form-check d-inline-block me-4">
+                                    <input class="form-check-input" type="checkbox" value="{{ $technology->id}}" id="technology-{{ $technology->id}}" name="technologies[]">
+                                    <label class="form-check-label" for="technology-{{ $technology->id}}">
+                                        {{ $technology->title }}
+                                    </label>   
+                                </div>
+                            @endforeach
 
                         </div>
 

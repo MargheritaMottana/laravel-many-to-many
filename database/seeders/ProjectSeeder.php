@@ -48,16 +48,22 @@ class ProjectSeeder extends Seeder
                 'type_id' => $randomType->id,
             ]);
 
+            // creo un array vuoto
             $technologyIds = [];
 
+            // prendo un numero random contanto tra 0 e gli elementi di technology
             for ($j=0; $j < rand(0, Technology::count()) ; $j++) { 
+
+                // prendo una tecnologia random
                 $randomTechnology = Technology::inRandomOrder()->first();
 
+                // se non esiste ancora nell'array la pusho
                 if (!in_array($randomTechnology->id, $technologyIds)) {
                     $technologyIds[] = $randomTechnology->id;
                 }
             }
 
+            // alla fine del ciclo, sincronizzo le tecnologie
             $project->technologies()->sync($technologyIds);
         }
     }

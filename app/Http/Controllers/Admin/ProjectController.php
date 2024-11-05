@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\{
     Project,
     Type,
+    Technology,
 };
 
 use Illuminate\Http\Request;
@@ -32,7 +33,10 @@ class ProjectController extends Controller
         // aggiungo type
         $types = Type::all();
 
-        return view('admin.projects.create', compact('types'));
+        // aggiungo technology
+        $technologies = Technology::all();
+
+        return view('admin.projects.create', compact('types', 'technologies'));
     }
 
     /**
@@ -51,6 +55,9 @@ class ProjectController extends Controller
 
             // se nella tabella type, esiste come valore della colonna id
             'type_id'=>'nullable|exists:types,id',
+
+            // tecnologie
+            'technologies'=>'nullable|array|exists:technologies,id',
         ]);
         
         // aggiunto lo slug perché non l'ho messo nel form
@@ -59,6 +66,9 @@ class ProjectController extends Controller
         $data['published'] = isset($data['published']);
 
         $project = Project::create($data);
+
+        // sincronizzo id delle tecnologie con i progetti
+        $project->technologies()->sync($data['technologies'] ?? []);
 
         return redirect()->route('admin.projects.show', ['project' => $project->id]);
     }
@@ -79,7 +89,10 @@ class ProjectController extends Controller
         // aggiungo type
         $types = Type::all();
 
-        return view('admin.projects.edit', compact('project', 'types'));
+        // aggiungo technology
+        $technologies = Technology::get();
+
+        return view('admin.projects.edit', compact('project', 'types', 'technologies'));
     }
 
     /**
@@ -97,12 +110,18 @@ class ProjectController extends Controller
 
             // se nella tabella type, esiste come valore della colonna id
             'type_id'=>'nullable|exists:types,id',
+
+            // tecnologie
+            'technologies'=>'nullable|array|exists:technologies,id',
         ]);
         
         $data['slug'] = str()->slug($data['title']);
         $data['published'] = isset($data['published']);
 
         $project->update($data);
+
+        // sincronizzo id delle tecnologie con i progetti
+        $project->technologies()->sync($data['technologies'] ?? []);
 
         return redirect()->route('admin.projects.show', ['project' => $project->id]);
 

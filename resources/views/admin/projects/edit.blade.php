@@ -103,6 +103,34 @@
 
                         </div>
 
+                        {{-- aggiunte checkbox per aggiungere le categorie --}}
+                        <div class="mb-5">
+
+                            <div>
+                                <label class="form-label">Technologies</label>
+                            </div>
+
+                            @foreach ($technologies as $technology)
+                                <div class="form-check d-inline-block me-4">
+                                    <input
+                                        @if ($project->technologies->contains($technology->id))
+                                            checked
+                                        @endif
+                                        class="form-check-input"
+                                        type="checkbox"
+                                        value="{{ $technology->id}}"
+                                        id="technology-{{ $technology->id}}"
+                                        name="technologies[]">
+
+                                    <label class="form-check-label" for="technology-{{ $technology->id}}">
+                                        {{ $technology->title }}
+                                    </label>   
+
+                                </div>
+                            @endforeach
+
+                        </div>
+
                         <div class="form-check mb-5">
                             <input class="form-check-input" type="checkbox" value="1" id="published" name="published"
                                 {{-- se la vecchia versione di published era selezionata, allora selezionala --}}

@@ -55,6 +55,18 @@
                                 -
                             @endif
                         </li>
+                        <li>
+                            Technologies:
+                            <ul>
+                                @foreach ($project->technologies as $technology)
+                                    <li>
+                                        <a href="{{ route('admin.technologies.show', ['technology' => $technology->id] ) }}" class="badge rounded-pill text-bg-primary">
+                                            {{ $technology->title }} 
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </li>
 
                     </ul>
 

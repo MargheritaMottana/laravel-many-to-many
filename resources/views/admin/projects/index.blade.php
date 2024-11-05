@@ -37,9 +37,13 @@
                             {{-- aggiunta sezione type in seguito ad aver stabilito la relazione tra project e type --}}
                             <th scope="col" class="text-center">Type</th>
 
+                            {{-- aggiunta sezione technology in seguito ad aver stabilito la relazione tra project e technology --}}
+                            <th scope="col">Technologies</th>
+
                             <th scope="col">Client</th>
                             <th scope="col">Sector</th>
                             <th scope="col" class="text-center">Published</th>
+
                             <th scope="col">Actions</th>
                           </tr>
                         </thead>
@@ -62,6 +66,15 @@
                                             {{-- altrimenti mostrami un trattino --}}
                                             -
                                         @endif
+                                    </td>
+
+                                    {{-- aggiunta sezione technologies --}}
+                                    <td>
+                                        @foreach ($project->technologies as $technology)
+                                            <a href="{{ route('admin.technologies.show', ['technology' => $technology->id] ) }}" class="badge rounded-pill text-bg-primary py-2 mb-3 d-block">
+                                                {{ $technology->title }} 
+                                            </a>
+                                        @endforeach
                                     </td>
 
                                     <td>{{ $project->client }}</td>

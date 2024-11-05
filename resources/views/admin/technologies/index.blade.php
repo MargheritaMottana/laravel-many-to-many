@@ -47,7 +47,7 @@
                                     {{-- aggiunta colonna per linkare ai progetti che hanno delle technology --}}
                                     <td>
                                         {{-- conteggio di quanti progetti sono collegati alle technology --}}
-                                        {{-- {{ count($technology->projects) }} --}}
+                                        {{ count($technology->projects) }}
                                     </td>
 
                                     <td>

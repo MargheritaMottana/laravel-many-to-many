@@ -40,7 +40,7 @@
 
                             {{-- se ci sono post collegati --}}
 
-                            {{-- @if ($technology->projects()->count() > 0)
+                            @if ($technology->projects()->count() > 0)
                                 <ul>
                                     @foreach ($technology->projects as $project)
                                         <li>
@@ -49,13 +49,13 @@
                                             </a>
                                         </li>
                                     @endforeach
-                                </ul> --}}
+                                </ul>
 
                             {{-- altrimenti --}}
 
-                            {{-- @else
+                            @else
                                 None
-                            @endif --}}
+                            @endif
                         </li>
                     </ul>
 

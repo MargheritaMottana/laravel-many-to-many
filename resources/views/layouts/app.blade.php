@@ -31,6 +31,10 @@
                                 {{-- aggiunto link alla pagina dei types --}}
                                 <a class="nav-link" href="{{route('admin.types.index')}}">Types</a>
                             </li>
+                            <li class="nav-item">
+                                {{-- aggiunto link alla pagina delle technology --}}
+                                <a class="nav-link" href="{{route('admin.technologies.index')}}">Technologies</a>
+                            </li>
                         </ul>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf

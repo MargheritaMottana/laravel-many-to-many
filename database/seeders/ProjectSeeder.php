@@ -40,7 +40,6 @@ class ProjectSeeder extends Seeder
 
                 // aggiungo la colonna type_id
                 'type_id' => $randomType->id,
-
             ]);
         }
     }

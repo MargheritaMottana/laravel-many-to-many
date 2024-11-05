@@ -38,6 +38,10 @@
                                     {{-- aggiunto link alla pagina dei types --}}
                                     <a class="nav-link" href="{{route('admin.types.index')}}">Types</a>
                                 </li>
+                                <li class="nav-item">
+                                    {{-- aggiunto link alla pagina delle technologies --}}
+                                    <a class="nav-link" href="{{route('admin.technologies.index')}}">Types</a>
+                                </li>
                             @else
                                 {{-- log in da effettuare --}}
                                 <li class="nav-item">

@@ -20,7 +20,11 @@ return new class extends Migration
             // descrizione
             $table->text('description', 4096);
             // immagine
+            // $table->string('cover', 2048)->nullable();
+
+            // immagine versione file
             $table->string('cover', 2048)->nullable();
+            
             // nome cliente
             $table->string('client', 64)->nullable();
             // settore lavorativo

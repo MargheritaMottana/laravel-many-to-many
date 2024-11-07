@@ -34,7 +34,7 @@
             <div class="card">
                 <div class="card-body">
 
-                    <form action="{{ route('admin.projects.update', ['project' => $project->id])}}" method="POST">
+                    <form action="{{ route('admin.projects.update', ['project' => $project->id])}}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         
@@ -52,11 +52,34 @@
                             <textarea required minlength="20" maxlength="4096" id="description" name="description" rows="3" placeholder="Write the description..." class="form-control">{{ old('description', $project->description) }}</textarea>
                         </div>
 
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label for="cover" class="form-label">
-                                Cover
+                                Cover - Link
                             </label>
                             <input value="{{ old('cover', $project->cover) }}" type="text" minlength="5" maxlength="2048" id="cover" name="cover" placeholder="Insert the link of the image..." class="form-control">
+                        </div> --}}
+
+                        {{-- Aggiunto cover file --}}
+                        <div class="mb-3">
+                            <label for="cover" class="form-label">
+                                Cover - File
+                            </label>
+                            <input type="file" id="cover" name="cover" placeholder="Choose a cover image..." class="form-control mb-3">
+
+                            {{-- se già settata, faccio vedere la copertina --}}
+                            @if ($project->cover)
+
+                                <p>Current cover:</p>
+                                <img src="{{ asset('/storage/'.$project->cover) }}" alt="{{ $project->title }}" class="rounded">   
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="1" id="delete-cover" name="delete-cover">
+                                    <label class="form-check-label" for="delete-cover">
+                                        Delete current cover
+                                    </label>
+                                </div>
+
+                            @endif
                         </div>
 
                         <div class="row mb-4">

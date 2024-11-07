@@ -23,7 +23,14 @@
     <div class="row">
         <div class="col">
             <div class="card">
-                <img src="{{ $project->cover }}" class="card-img-top" alt="{{ $project->title }}">
+
+                {{-- cover versione link --}}
+                {{-- <img src="{{ $project->cover }}" alt="{{ $project->title }}" class="card-img-top"> --}}
+
+                {{-- cover versione file --}}
+                @if ($project->cover)
+                    <img src="{{ asset('/storage/'.$project->cover) }}" alt="{{ $project->title }}" class="card-img-top">
+                @endif
 
                 <div class="card-body">
                     <ul>
@@ -55,6 +62,7 @@
                                 -
                             @endif
                         </li>
+
                         <li>
                             Technologies:
                             <ul>
@@ -63,11 +71,10 @@
                                         <a href="{{ route('admin.technologies.show', ['technology' => $technology->id] ) }}" class="badge rounded-pill text-bg-primary">
                                             {{ $technology->title }} 
                                         </a>
-                                    </li>
+                                    </li>   
                                 @endforeach
                             </ul>
                         </li>
-
                     </ul>
 
                     <p class="mb-4">

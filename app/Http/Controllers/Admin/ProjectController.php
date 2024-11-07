@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Http\Request;
+
 // controller
 use App\Http\Controllers\Controller;
+
+// helpers
+use Illuminate\Support\Facades\Storage;
 
 // model
 use App\Models\{
@@ -11,8 +16,6 @@ use App\Models\{
     Type,
     Technology,
 };
-
-use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
@@ -48,7 +51,11 @@ class ProjectController extends Controller
         $data = $request->validate([
             'title'=> 'required|min:3|max:64',
             'description'=> 'required|min:20|max:4096',
-            'cover'=> 'nullable|url|min:5|max:2048',
+            // 'cover'=> 'nullable|url|min:5|max:2048',
+
+            // aggiunta validazione cover - file
+            'cover'=> 'nullable|image|max:2048',
+
             'client'=> 'nullable|min:3|max:64',
             'sector'=> 'nullable|min:3|max:64',
             'published'=> 'nullable|in:1,0,true,false',
@@ -64,6 +71,13 @@ class ProjectController extends Controller
         $data['slug'] = str()->slug($data['title']);
         // verifico che per il valore booleano, sia effettivamente passato qualcosa
         $data['published'] = isset($data['published']);
+
+        if( isset($data['cover']) ){
+            // aggiunto percorso relativo dell'immagine
+            $img_path = Storage::put('uploads', $data['cover']);
+            //salvo il percorso nel database
+            $data['cover'] = $img_path;
+        };
 
         $project = Project::create($data);
 
@@ -103,7 +117,11 @@ class ProjectController extends Controller
         $data = $request->validate([
             'title'=> 'required|min:3|max:64',
             'description'=> 'required|min:20|max:4096',
-            'cover'=> 'nullable|url|min:5|max:2048',
+            // 'cover'=> 'nullable|url|min:5|max:2048',
+
+            // aggiunta validazione cover - file
+            'cover'=> 'nullable|image|max:2048',
+
             'client'=> 'nullable|min:3|max:64',
             'sector'=> 'nullable|min:3|max:64',
             'published'=> 'nullable|in:1,0,true,false',
@@ -113,10 +131,37 @@ class ProjectController extends Controller
 
             // tecnologie
             'technologies'=>'nullable|array|exists:technologies,id',
+
+            // delete cover
+            'delete-cover' => 'nullable',
         ]);
         
         $data['slug'] = str()->slug($data['title']);
         $data['published'] = isset($data['published']);
+
+        // Se c'è già posso rimuoverla
+        // Se c'è già posso sostituirla
+        // Posso aggiungerla se non c'è
+
+        // se l'utente mi ha passato cover
+        if( isset($data['cover']) ){
+
+            // se cover è diverso da null
+            if($project->cover){
+                // cancello cover precedente
+                Storage::delete($project->cover);
+                $project->cover = null;
+            }
+
+            $img_path = Storage::put('uploads', $data['cover']);
+            $data['cover'] = $img_path;
+        }
+        else if (isset($data['delete-cover'])){
+            if($project->cover){
+                Storage::delete($project->cover);
+                $project->cover = null;
+            }
+        }
 
         $project->update($data);
 
@@ -132,6 +177,13 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+
+        // se cover è diverso da null
+        if($project->cover){
+            // cancello cover precedente
+            Storage::delete($project->cover);
+        }
+
         $project->delete();
 
         return redirect()->route('admin.projects.index');

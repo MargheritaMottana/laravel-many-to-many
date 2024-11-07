@@ -34,7 +34,8 @@
             <div class="card">
                 <div class="card-body">
 
-                    <form action="{{ route('admin.projects.store')}}" method="POST">
+                    {{-- aggiunto enctype per dire al form che potrebbe ricevere dei file --}}
+                    <form action="{{ route('admin.projects.store')}}" method="POST" enctype="multipart/form-data">
                         @csrf
                         
                         <div class="mb-3">
@@ -51,11 +52,19 @@
                             <textarea required minlength="20" maxlength="4096" id="description" name="description" rows="3" placeholder="Write the description..." class="form-control">{{ old('description') }}</textarea>
                         </div>
 
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label for="cover" class="form-label">
-                                Cover
+                                Cover - Link
                             </label>
                             <input value="{{ old('cover') }}" type="text" minlength="5" maxlength="2048" id="cover" name="cover" placeholder="Insert the link of the image..." class="form-control">
+                        </div> --}}
+
+                        {{-- Aggiunto cover file --}}
+                        <div class="mb-3">
+                            <label for="cover" class="form-label">
+                                Cover - File
+                            </label>
+                            <input type="file" id="cover" name="cover" placeholder="Choose a cover image..." class="form-control">
                         </div>
 
                         <div class="row mb-4">
